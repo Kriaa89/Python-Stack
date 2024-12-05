@@ -1,0 +1,35 @@
+# Import the User model
+from users_app.models import User
+
+# Query 1: Create 3 new users
+User.objects.create(first_name="John", last_name="Doe", email_address="john.doe@example.com", age=30)
+User.objects.create(first_name="Jane", last_name="Smith", email_address="jane.smith@example.com", age=25)
+User.objects.create(first_name="Sam", last_name="Brown", email_address="sam.brown@example.com", age=40)
+
+# Query 2: Retrieve all the users
+users = User.objects.all()
+print(users)  # Prints a queryset containing all users
+
+# Query 3: Retrieve the last user
+last_user = User.objects.last()
+print(last_user)  # Prints the last user in the table
+
+# Query 4: Retrieve the first user
+first_user = User.objects.first()
+print(first_user)  # Prints the first user in the table
+
+# Query 5: Change the user with id=3 so their last name is Pancakes
+user = User.objects.get(id=3)
+user.last_name = "Pancakes"
+user.save()
+
+# Query 6: Delete the user with id=2
+User.objects.filter(id=2).delete()
+
+# Query 7: Get all the users, sorted by their first name
+sorted_users = User.objects.all().order_by('first_name')
+print(sorted_users)  # Prints users sorted by first name in ascending order
+
+# BONUS Query: Get all the users, sorted by their first name in descending order
+sorted_users_desc = User.objects.all().order_by('-first_name')
+print(sorted_users_desc)  # Prints users sorted by first name in descending order

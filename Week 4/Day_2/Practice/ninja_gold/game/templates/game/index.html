@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Gold</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        form input, form button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            background-color: #e2e2e2;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Gold: {{ request.session.gold }}</h1>
+
+        <!-- Form to set win conditions -->
+        <form action="/set_conditions" method="post">
+            {% csrf_token %}
+            <label for="moves">Number of Moves:</label>
+            <input type="number" name="moves" id="moves">
+            <label for="goal">Goal for Gold:</label>
+            <input type="number" name="goal" id="goal">
+            <button type="submit">Set Conditions</button>
+        </form>
+
+        <!-- Forms to process money based on location -->
+        <form action="/process_money/farm" method="post">
+            {% csrf_token %}
+            <button type="submit">Farm</button>
+        </form>
+        <form action="/process_money/cave" method="post">
+            {% csrf_token %}
+            <button type="submit">Cave</button>
+        </form>
+        <form action="/process_money/house" method="post">
+            {% csrf_token %}
+            <button type="submit">House</button>
+        </form>
+        <form action="/process_money/casino" method="post">
+            {% csrf_token %}
+            <button type="submit">Casino</button>
+        </form>
+
+        <!-- Display win/lose message if any -->
+        {% if request.session.message %}
+            <h2>{{ request.session.message }}</h2>
+        {% endif %}
+
+        <!-- Display activity log -->
+        <h2>Activities:</h2>
+        <ul>
+            {% for activity in request.session.activities %}
+                <li>{{ activity.time }}: Earned {{ activity.gold }} gold from the {{ activity.location }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

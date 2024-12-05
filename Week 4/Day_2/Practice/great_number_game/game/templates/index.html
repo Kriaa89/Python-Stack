@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Great Number Game</title>
+</head>
+<body>
+    <h1>Welcome to the Great Number Game!</h1>
+    <p>Guess a number between 1 and 100!</p>
+
+    {% if request.session.message %}
+        <div class="message 
+        {% if 'too low' in request.session.message %}
+        too-low{% elif 'too high' in request.session.message %}
+        too-high{% elif 'correct' in request.session.message %}
+        correct{% endif %}">
+            {{ request.session.message }}
+        </div>
+    {% endif %}
+
+    {% if request.session.game_over %}
+        <form action="/reset" method="post">
+            {% csrf_token %}
+            <button type="submit">Play Again</button>
+        </form>
+    {% else %}
+        <form action="/guess" method="POST">
+            {% csrf_token %}
+            <input type="number" name="guess" placeholder="Enter your guess" required>
+            <button type="submit">Submit</button>
+        </form>
+        <p>Attempts: {{ request.session.attempts }}</p>
+    {% endif %}
+</body>
+</html>

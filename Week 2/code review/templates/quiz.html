@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>quiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4"> {{question.question}} </h2>
+        <form action="/submit_answer"  method="post" class="bg-white p-4 shadow">
+            <input type="hidden" name="question_number" value="{{question_number}}">
+            {% for option in question.options  %}
+                <div class="form-check">
+                    <input type="radio" id="option{{loop.index}}" name="answer" value="{{option}}" required class="form-check-input">
+                    <label class="form-check-label" for="option{{loop.index}}">{{option}}</label>
+                </div>
+            {% endfor %}
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit Answer</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

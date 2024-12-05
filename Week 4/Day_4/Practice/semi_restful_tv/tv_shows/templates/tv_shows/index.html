@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Shows</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">All Shows</h1>
+        <a href="/shows/new" class="btn btn-primary mb-3">Add a New Show</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Network</th>
+                    <th>Release Date</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for show in shows %}
+                <tr>
+                    <td>{{ show.id }}</td>
+                    <td>{{ show.title }}</td>
+                    <td>{{ show.network }}</td>
+                    <td>{{ show.release_date }}</td>
+                    <td>{{ show.description }}</td>
+                    <td class="d-flex">
+                        <a href="/shows/{{ show.id }}" class="btn btn-info btn-sm d-inline mr-2">View</a>
+                        <a href="/shows/{{ show.id }}/edit" class="btn btn-warning btn-sm d-inline mr-2">Edit</a>
+                        <a href="/shows/{{ show.id }}/destroy" class="btn btn-danger btn-sm d-inline">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

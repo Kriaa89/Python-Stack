@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amadon - Checkout</title>
+</head>
+<body>
+    <h3>Thank you for your business!</h3>
+    <p>You have been charged ${{ last_order.total_price }} for {{ last_order.quantity_ordered }} items</p>
+    <p>Total Orders: {{ total_quantity }} items</p>
+    <p>Total Spent: ${{ total_spent }}</p>
+
+    <a href="/">Go back</a>
+</body>
+</html>
