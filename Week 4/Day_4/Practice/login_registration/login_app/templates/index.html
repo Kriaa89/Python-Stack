@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Registration</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('input[name="email"]').on('blur', function() {
+                var email = $(this).val();
+                $.ajax({
+                    url: '/check_email/',
+                    data: {
+                        'email': email
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.is_taken) {
+                            alert("Email is already in use.");
+                        }
+                    }
+                });
+            });
+        });
+
+        function validateForm() {
+            let form = document.forms["registrationForm"];
+            let firstName = form["first_name"].value;
+            let lastName = form["last_name"].value;
+            let email = form["email"].value;
+            let password = form["password"].value;
+            let confirmPassword = form["confirm_password"].value;
+            let birthday = form["birthday"].value;
+            let errors = [];
+
+            if (firstName.length < 2) {
+                errors.push("First name must be at least 2 characters");
+            }
+            if (lastName.length < 2) {
+                errors.push("Last name must be at least 2 characters");
+            }
+            let emailRegex = /^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$/;
+            if (!emailRegex.test(email)) {
+                errors.push("Invalid email address");
+            }
+            if (password.length < 8) {
+                errors.push("Password must be at least 8 characters");
+            }
+            if (password !== confirmPassword) {
+                errors.push("Passwords do not match");
+            }
+            let birthdayDate = new Date(birthday);
+            let age = new Date().getFullYear() - birthdayDate.getFullYear();
+            if (age < 13) {
+                errors.push("You must be at least 13 years old to register");
+            }
+
+            if (errors.length > 0) {
+                alert(errors.join("\n"));
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body class="container mt-5">
+    {% if messages %}
+    <div class="alert alert-info">
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <h2>Register</h2>
+    <form name="registrationForm" action="/register" method="POST" onsubmit="return validateForm()" class="mb-4">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="first_name">First Name:</label>
+            <input type="text" name="first_name" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="last_name">Last Name:</label>
+            <input type="text" name="last_name" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="text" name="email" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="birthday">Birthday:</label>
+            <input type="date" name="birthday" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="confirm_password">Confirm PW:</label>
+            <input type="password" name="confirm_password" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <h2>Login</h2>
+    <form action="/login" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="text" name="email" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</body>
+</html>
